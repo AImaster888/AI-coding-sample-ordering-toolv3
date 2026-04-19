@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍱 公司點餐系統</title>
+  <link rel="stylesheet" href="all.css" />
+</head>
+<body>
+
+  <!-- ======================================================
+       載入遮罩：頁面初始化與 API 呼叫時顯示
+  ====================================================== -->
+  <div id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <p id="loading-message">系統啟動中，請稍候…</p>
+  </div>
+
+  <!-- ======================================================
+       登入區塊：尚未登入時顯示
+  ====================================================== -->
+  <div id="login-section" style="display:none">
+    <div class="login-bg">
+      <div class="login-card">
+        <div class="login-logo">🍱</div>
+        <h1 class="login-title">公司點餐系統</h1>
+        <p class="login-subtitle">今天吃什麼？讓我們一起決定！</p>
+        <div class="login-divider"></div>
+        <p class="login-hint">請使用公司 Google 帳號登入</p>
+        <button id="login-btn" class="google-login-btn">
+          <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          使用 Google 帳號登入
+        </button>
+        <p class="login-footer">本系統僅供內部員工使用</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       未授權區塊：Email 不在授權名單時顯示
+  ====================================================== -->
+  <div id="unauthorized-section" style="display:none">
+    <div class="unauth-bg">
+      <div class="unauth-card">
+        <div class="unauth-icon">🚫</div>
+        <h2>尚未取得授權</h2>
+        <p>您的帳號 <strong id="unauthorized-email"></strong><br/>不在系統授權名單中。</p>
+        <p class="unauth-hint">請聯繫管理員申請開通權限</p>
+        <button id="unauthorized-logout-btn" class="btn btn-outline">換個帳號登入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       主應用程式區塊：授權通過後顯示
+  ====================================================== -->
+  <div id="app-section" style="display:none">
+
+    <!-- 頂部標題列 -->
+    <header class="app-header">
+      <div class="header-brand">🍱 今日點餐</div>
+      <div class="header-user">
+        <div class="header-user-info">
+          <span id="user-display-name" class="user-name"></span>
+          <span id="user-display-role" class="user-role"></span>
+        </div>
+        <button id="app-logout-btn" class="btn-logout">登出</button>
+      </div>
+    </header>
+
+    <!-- 頁籤導航列 -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="menu">🍽️ 今日點餐</button>
+      <button class="tab-btn" data-tab="orders">📋 查詢訂單</button>
+      <!-- 管理員設定頁籤：僅管理員可見 -->
+      <button class="tab-btn admin-only" data-tab="setup" style="display:none">⚙️ 設定餐廳</button>
+    </nav>
+
+    <!-- ------------------------------------------------
+         頁籤一：今日點餐
+    ------------------------------------------------ -->
+    <div id="tab-menu" class="tab-content">
+      <!-- 餐廳選擇器（橫向捲動） -->
+      <div id="restaurant-tabs" class="restaurant-tabs"></div>
+      <!-- 菜單卡片區域 -->
+      <div id="menu-cards" class="menu-cards-area"></div>
+
+      <!-- ── 購物車：即時顯示目前選取的餐點，確認後才送出 ── -->
+      <div id="cart-section" style="display:none">
+        <div class="cart-header">
+          <span class="cart-title">🛒 我的點餐清單</span>
+          <button id="clear-cart-btn" class="btn btn-sm btn-outline">清空</button>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-footer">
+          <div class="cart-total">
+            合計 <strong id="cart-total-amount">NT$ 0</strong>
+          </div>
+          <button id="confirm-order-btn" class="btn btn-primary btn-lg">
+            ✅ 確認送出訂單
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------
+         頁籤二：查詢訂單
+    ------------------------------------------------ -->
+    <div id="tab-orders" class="tab-content" style="display:none">
+      <div class="orders-toolbar">
+        <button id="refresh-orders-btn" class="btn btn-sm btn-outline">🔄 刷新</button>
+        <button id="copy-orders-btn" class="btn btn-sm btn-primary" style="display:none">
+          📋 一鍵複製 (貼到 LINE)
+        </button>
+        <button id="cancel-my-orders-btn" class="btn btn-sm btn-cancel" style="display:none">
+          ✕ 取消我的訂單
+        </button>
+      </div>
+      <div id="orders-list"></div>
+
+      <!-- 清空今日訂單放在查詢訂單頁籤底部（語意：看完訂單才清空） -->
+      <div id="clear-orders-section" class="admin-only setup-section" style="display:none;margin-top:24px">
+        <p class="admin-footer-label">管理員專區</p>
+        <p class="admin-danger-hint">
+          ⚠️ <strong>危險操作</strong>：清空後將永久刪除今日所有人的點餐記錄，且無法復原。<br>
+          執行前請確認已完成收單、截圖或複製備份。
+        </p>
+        <button id="clear-orders-btn" class="btn btn-danger">
+          🗑️ 清空今日所有點餐記錄
+        </button>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------
+         頁籤三：設定餐廳（管理員專屬）
+    ------------------------------------------------ -->
+    <div id="tab-setup" class="tab-content" style="display:none">
+
+      <!-- ── A. 今日開放餐廳 ── -->
+      <div class="setup-section">
+        <div class="setup-section-title">📅 今日開放餐廳</div>
+        <p class="setup-hint">勾選今天要開放點餐的餐廳，員工將只能從勾選的餐廳點餐。</p>
+        <div id="restaurant-checkboxes" class="restaurant-checkboxes"></div>
+        <button id="save-setup-btn" class="btn btn-primary">💾 儲存今日設定</button>
+      </div>
+
+      <div class="setup-divider"></div>
+
+      <!-- ── B. 餐廳管理：現有餐廳清單 ── -->
+      <div class="setup-section">
+        <div class="setup-section-title">🏪 餐廳管理</div>
+        <p class="setup-hint">刪除餐廳將一併移除該餐廳在菜單中的所有品項。</p>
+        <div id="restaurant-manage-list"></div>
+      </div>
+
+      <div class="setup-divider"></div>
+
+      <!-- ── C. 新增餐廳 ── -->
+      <div class="setup-section">
+        <div class="setup-section-title">➕ 新增餐廳</div>
+        <p class="setup-hint">填寫餐廳名稱與至少一項餐點後儲存，即可加入菜單。</p>
+
+        <div class="add-restaurant-form">
+          <div class="form-row">
+            <label class="form-label">餐廳名稱</label>
+            <input type="text" id="new-restaurant-name" class="form-input"
+                   placeholder="例：麥當勞" maxlength="30" />
+          </div>
+
+          <div class="form-label" style="margin-bottom:6px">餐點品項</div>
+          <div id="new-menu-items">
+            <!-- 動態新增的品項列由 JS 生成 -->
+          </div>
+
+          <button id="add-menu-item-row-btn" class="btn btn-sm btn-outline" style="margin-top:8px">
+            ＋ 新增品項
+          </button>
+
+          <div style="margin-top:16px">
+            <button id="save-new-restaurant-btn" class="btn btn-primary">
+              ✅ 確認新增餐廳
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- end #app-section -->
+
+  <!-- ======================================================
+       Toast 提示訊息元素
+  ====================================================== -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
+  <!-- ======================================================
+       JavaScript 載入順序說明：
+       1. all.js 先載入，設定 window.onGoogleLibraryLoad 回呼函數
+       2. GSI 腳本非同步載入完成後，自動呼叫 window.onGoogleLibraryLoad
+  ====================================================== -->
+  <script src="all.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</body>
+</html>

@@ -1,0 +1,1236 @@
+/* ============================================================
+   公司點餐系統 — all.css
+   設計風格：溫馨、現代、行動裝置優先（Mobile-First）
+   主色調：暖橘 + 奶油白，讓員工一打開就很想來點餐 🍱
+============================================================ */
+
+/* ---- CSS 自訂變數（色票與常用數值） ---- */
+:root {
+  --primary:        #FF6B35;   /* 主色：暖橘 */
+  --primary-dark:   #E8521C;   /* 深橘（hover/active） */
+  --primary-light:  #FFA07A;   /* 淺橘（背景裝飾） */
+  --secondary:      #FFB347;   /* 輔助色：金黃 */
+  --success:        #27AE60;   /* 成功綠 */
+  --danger:         #E74C3C;   /* 危險紅 */
+  --danger-dark:    #C0392B;
+  --bg:             #FFF5EE;   /* 主背景：貝殼白（帶暖意） */
+  --card-bg:        #FFFFFF;
+  --text:           #2C1810;   /* 主文字：深暖棕 */
+  --text-muted:     #8B7355;   /* 次要文字：淺棕 */
+  --border:         #F0D9CC;   /* 邊框：淡橘米 */
+  --shadow:         rgba(255, 107, 53, 0.12);
+  --shadow-md:      rgba(0, 0, 0, 0.08);
+  --radius:         12px;
+  --radius-sm:      8px;
+  --radius-lg:      20px;
+  --transition:     0.2s ease;
+}
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+}
+
+/* ============================================================
+   載入遮罩
+============================================================ */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  width: 56px;
+  height: 56px;
+  border: 5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#loading-message {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   登入頁面
+============================================================ */
+.login-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(255, 179, 71, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 107, 53, 0.20) 0%, transparent 60%),
+    linear-gradient(160deg, #FFF8F2 0%, #FFF0E0 100%);
+}
+
+.login-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 48px 36px 40px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow:
+    0 4px 24px var(--shadow),
+    0 1px 4px var(--shadow-md);
+}
+
+.login-logo {
+  font-size: 4rem;
+  line-height: 1;
+  margin-bottom: 12px;
+  display: block;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.login-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.login-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.login-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 0 20px;
+}
+
+.login-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* Google 登入按鈕 */
+.google-login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 13px 20px;
+  background: #fff;
+  color: #3c4043;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1.5px solid #dadce0;
+  border-radius: var(--radius);
+  transition: background var(--transition), box-shadow var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.google-login-btn:hover {
+  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.google-login-btn:active {
+  background: #f1f3f4;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.login-footer {
+  margin-top: 20px;
+  font-size: 0.78rem;
+  color: #c0a898;
+}
+
+/* ============================================================
+   未授權頁面
+============================================================ */
+.unauth-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(160deg, #FFF8F2 0%, #FFF0E0 100%);
+}
+
+.unauth-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 48px 32px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+
+.unauth-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+}
+
+.unauth-card h2 {
+  font-size: 1.4rem;
+  color: var(--danger);
+  margin-bottom: 12px;
+}
+
+.unauth-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.unauth-hint {
+  font-size: 0.82rem !important;
+  color: #c0a898 !important;
+  margin-bottom: 24px !important;
+}
+
+/* ============================================================
+   通用按鈕樣式
+============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 0.82rem;
+}
+
+.btn-lg {
+  padding: 14px 28px;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+}
+.btn-primary:hover  { background: var(--primary-dark); box-shadow: 0 4px 14px rgba(255, 107, 53, 0.4); }
+.btn-primary:active { background: var(--primary-dark); transform: scale(0.98); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+.btn-outline:hover  { background: rgba(255,107,53,0.06); }
+.btn-outline:active { background: rgba(255,107,53,0.12); }
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+}
+.btn-danger:hover  { background: var(--danger-dark); box-shadow: 0 4px 14px rgba(231, 76, 60, 0.45); }
+.btn-danger:active { transform: scale(0.98); }
+
+/* 「清除我的訂單」按鈕：輪廓紅，視覺重量低於管理員紅按鈕 */
+.btn-cancel {
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid var(--danger);
+}
+.btn-cancel:hover  { background: rgba(231, 76, 60, 0.07); }
+.btn-cancel:active { background: rgba(231, 76, 60, 0.14); }
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ============================================================
+   主應用程式 — Header
+============================================================ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 56px;
+  background: linear-gradient(90deg, var(--primary) 0%, #FF8C42 100%);
+  box-shadow: 0 2px 12px rgba(255, 107, 53, 0.35);
+}
+
+.header-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-user-info {
+  text-align: right;
+}
+
+.user-name {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 一般成員：低調小字 */
+.user-role {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.75);
+}
+
+/* 管理員專屬 badge：金色，一眼可辨 */
+.user-role.is-admin {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 8px;
+  background: #FFD700;
+  color: #7A4F00;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 50px;
+  letter-spacing: 0.05em;
+}
+
+.btn-logout {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: background var(--transition);
+  line-height: 1.4;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.35); }
+
+/* ============================================================
+   主應用程式 — 頁籤導航
+============================================================ */
+.nav-tabs {
+  display: flex;
+  background: var(--card-bg);
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all var(--transition);
+  min-width: 90px;
+}
+
+.tab-btn:hover {
+  color: var(--primary);
+  background: rgba(255, 107, 53, 0.04);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: rgba(255, 107, 53, 0.06);
+}
+
+/* ============================================================
+   頁籤內容區域
+============================================================ */
+.tab-content {
+  padding: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   今日點餐 — 餐廳選擇器
+============================================================ */
+.restaurant-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+}
+.restaurant-tabs::-webkit-scrollbar { display: none; }
+
+.restaurant-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 18px;
+  background: var(--card-bg);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all var(--transition);
+  box-shadow: 0 1px 4px var(--shadow-md);
+}
+
+.restaurant-tab:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.restaurant-tab.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.35);
+}
+
+/* ============================================================
+   菜單卡片區域
+============================================================ */
+.menu-cards-area {
+  /* 視窗較寬時顯示雙欄 */
+}
+
+.category-section {
+  margin-bottom: 24px;
+}
+
+.category-header {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 480px) {
+  .cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 菜單卡片 */
+.menu-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 8px var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.menu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--shadow);
+  border-color: var(--primary-light);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  flex: 1;
+}
+
+.card-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* 數量選擇列 */
+.card-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.qty-ctrl {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #fff;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  background: #FAF5F0;
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+  border: none;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.qty-btn:hover  { background: #F0E0D4; }
+.qty-btn:active { background: #E8D0C0; }
+
+.qty-input {
+  width: 36px;
+  height: 32px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  border: none;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  background: #fff;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.qty-input::-webkit-inner-spin-button,
+.qty-input::-webkit-outer-spin-button { display: none; }
+
+.qty-subtotal {
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* 備註輸入框 */
+.card-note {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text);
+  background: #FDFAF7;
+  transition: border-color var(--transition);
+}
+
+.card-note:focus {
+  border-color: var(--primary-light);
+  background: #fff;
+}
+
+.card-note::placeholder {
+  color: #c8b4a4;
+}
+
+/* 點餐按鈕 */
+.order-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: none;
+  letter-spacing: 0.02em;
+  transition: all var(--transition);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.25);
+}
+
+.order-btn:hover {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, #E89020 100%);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+  transform: translateY(-1px);
+}
+
+.order-btn:active {
+  transform: scale(0.97);
+}
+
+.order-btn:disabled {
+  background: #ddd;
+  color: #999;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.order-btn.success {
+  background: var(--success);
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+
+/* ============================================================
+   空狀態（Empty State）
+============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.empty-state h3 {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 0.88rem;
+}
+
+/* ============================================================
+   購物車（今日點餐頁籤下方，即時預覽）
+============================================================ */
+#cart-section {
+  margin-top: 24px;
+  background: var(--card-bg);
+  border: 2px solid var(--primary-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.12);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 12px;
+  background: linear-gradient(90deg, #FFF0E8, #FFFAF5);
+  border-bottom: 1px solid var(--border);
+}
+
+.cart-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--primary-dark);
+}
+
+/* 依餐廳分組 */
+.cart-group {
+  padding: 10px 18px 6px;
+  border-bottom: 1px solid #FAF0EA;
+}
+.cart-group:last-of-type { border-bottom: none; }
+
+.cart-group-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+/* 單筆購物車項目 */
+.cart-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #F5E8E0;
+}
+.cart-item:last-child { border-bottom: none; }
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  display: block;
+}
+.cart-item-name em {
+  font-style: normal;
+  color: var(--primary);
+  font-size: 0.85rem;
+}
+
+.cart-item-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.cart-item-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cart-item-price {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.cart-remove-btn {
+  background: transparent;
+  color: #CCA898;
+  border: none;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: color var(--transition), background var(--transition);
+}
+.cart-remove-btn:hover {
+  color: var(--danger);
+  background: rgba(231, 76, 60, 0.08);
+}
+
+/* 購物車底部：合計 + 送出按鈕 */
+.cart-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, #FFF8F4, #FFFCF8);
+  border-top: 1.5px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cart-total {
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.cart-total strong {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+/* ============================================================
+   確認訂單
+============================================================ */
+.orders-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.orders-summary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  box-shadow: 0 3px 10px rgba(255,107,53,0.25);
+}
+
+.orders-summary strong {
+  font-size: 1.05rem;
+}
+
+/* 依餐廳分組的訂單區塊 */
+.orders-group {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px var(--shadow-md);
+}
+
+.orders-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, #FFF0E8, #FFFAF5);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--primary-dark);
+}
+
+.orders-group-count {
+  margin-left: auto;
+  font-size: 0.78rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50px;
+  padding: 2px 9px;
+  font-weight: 600;
+}
+
+/* 單筆訂單列 */
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-bottom: 1px solid #FAF0EA;
+  transition: background var(--transition);
+}
+
+.order-item:last-child { border-bottom: none; }
+.order-item:hover { background: #FDFAF7; }
+
+.order-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-email {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.order-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-food {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.order-price {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.92rem;
+}
+
+.order-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* 管理員刪除單筆訂單按鈕 */
+.order-delete-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: #CCA898;
+  transition: color var(--transition), background var(--transition);
+  line-height: 1;
+}
+.order-delete-btn:hover {
+  color: var(--danger);
+  background: rgba(231, 76, 60, 0.08);
+}
+
+/* ============================================================
+   管理員：設定餐廳
+============================================================ */
+.setup-header {
+  margin-bottom: 20px;
+}
+
+.setup-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.setup-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.restaurant-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+/* 大型 Checkbox 標籤 */
+.restaurant-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 1px 4px var(--shadow-md);
+}
+
+.restaurant-checkbox-label:hover {
+  border-color: var(--primary-light);
+  background: #FFF8F4;
+}
+
+.restaurant-checkbox-label.checked {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, #FFF4EE, #FFFAF5);
+  box-shadow: 0 2px 10px rgba(255, 107, 53, 0.15);
+}
+
+/* 隱藏原生 checkbox，使用自訂樣式 */
+.restaurant-checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-mark {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  background: #fff;
+}
+
+.checked .checkbox-mark {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.checked .checkbox-mark::after {
+  content: '✓';
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.checkbox-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.setup-actions {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+  padding: 16px 0 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* 設定餐廳頁籤：區塊與分隔線 */
+.setup-section {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px var(--shadow-md);
+}
+
+.setup-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.setup-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+/* 現有餐廳管理列表 */
+.manage-restaurant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.manage-restaurant-row:last-child { border-bottom: none; }
+
+.manage-restaurant-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.manage-restaurant-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* 新增餐廳表單 */
+.add-restaurant-form { margin-top: 4px; }
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.form-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--text);
+  background: #FDFAF7;
+  transition: border-color var(--transition);
+}
+.form-input:focus { border-color: var(--primary-light); background: #fff; }
+
+/* 品項輸入列 */
+.menu-item-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.2fr auto;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+@media (max-width: 520px) {
+  .menu-item-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  .item-remove-btn { grid-column: 2; justify-self: end; }
+}
+
+.item-remove-btn {
+  background: transparent;
+  border: none;
+  color: #CCA898;
+  font-size: 0.85rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: color var(--transition), background var(--transition);
+}
+.item-remove-btn:hover { color: var(--danger); background: rgba(231,76,60,0.08); }
+
+/* ============================================================
+   管理員底部危險操作區
+============================================================ */
+.admin-footer {
+  margin-top: 32px;
+  padding: 0 16px 32px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.admin-footer-inner {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  text-align: center;
+  box-shadow: 0 2px 8px var(--shadow-md);
+}
+
+.admin-footer-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+/* 危險操作警示說明文字 */
+.admin-danger-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 16px;
+  text-align: left;
+  background: #FFF8F0;
+  border-left: 3px solid var(--danger);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* ============================================================
+   Toast 提示訊息
+============================================================ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #2C1810;
+  color: #fff;
+  padding: 13px 22px;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  max-width: 90vw;
+  text-align: center;
+  z-index: 10000;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-success { background: var(--success); }
+.toast-error   { background: var(--danger); }
+.toast-info    { background: #3498DB; }
+
+/* ============================================================
+   通用輔助類別
+============================================================ */
+.text-center { text-align: center; }
+.mt-12 { margin-top: 12px; }
+
+/* 小螢幕調整 */
+@media (max-width: 360px) {
+  .login-card {
+    padding: 36px 20px 32px;
+  }
+  .card-name {
+    font-size: 0.92rem;
+  }
+}
