@@ -87,6 +87,12 @@
     <div id="tab-menu" class="tab-content">
       <!-- 餐廳選擇器（橫向捲動） -->
       <div id="restaurant-tabs" class="restaurant-tabs"></div>
+      <!-- 懸浮購物車提示：有品項時顯示，點擊可捲動到購物車 -->
+      <div id="cart-fab" style="display:none" onclick="scrollToCart()">
+        🛒 <span id="cart-fab-count">0</span> 項・
+        NT$ <span id="cart-fab-amount">0</span>
+        <span class="cart-fab-hint">↓ 查看清單</span>
+      </div>
       <!-- 菜單卡片區域 -->
       <div id="menu-cards" class="menu-cards-area"></div>
 

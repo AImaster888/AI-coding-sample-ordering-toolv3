@@ -495,10 +495,12 @@ function renderCart() {
 
   if (state.cart.length === 0) {
     section.style.display = 'none';
+    updateCartFab();
     return;
   }
 
   section.style.display = '';
+  updateCartFab();
 
   // 依餐廳分組顯示
   const byRestaurant = {};
@@ -525,6 +527,30 @@ function renderCart() {
 
   const total = state.cart.reduce((s, i) => s + i.unitPrice * i.qty, 0);
   totalEl.textContent = `NT$ ${total.toLocaleString()}`;
+}
+
+/* 更新懸浮購物車 badge（品項數 + 合計金額） */
+function updateCartFab() {
+  const fab       = document.getElementById('cart-fab');
+  const countEl   = document.getElementById('cart-fab-count');
+  const amountEl  = document.getElementById('cart-fab-amount');
+  if (!fab) return;
+
+  const totalQty    = state.cart.reduce((s, i) => s + i.qty, 0);
+  const totalAmount = state.cart.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+
+  if (totalQty === 0) {
+    fab.style.display = 'none';
+    return;
+  }
+  fab.style.display  = 'flex';
+  countEl.textContent  = totalQty;
+  amountEl.textContent = totalAmount.toLocaleString();
+}
+
+/* 點擊懸浮 badge 後捲動到購物車 */
+function scrollToCart() {
+  document.getElementById('cart-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* 購物車：移除單一項目（事件委派入口） */
